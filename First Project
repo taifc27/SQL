@@ -1,0 +1,15 @@
+FROM superstore
+ORDER BY price;
+
+SELECT COUNT(*)
+FROM superstore; 
+
+SELECT AVG(price)
+FROM superstore;
+
+SELECT MIN(price)
+FROM superstore;
+
+SELECT SUM(stock_quantity), category
+FROM superstore
+WHERE category = 'Kitchen Supplies';
