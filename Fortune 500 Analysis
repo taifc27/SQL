@@ -60,14 +60,31 @@ VALUES
 
 #Analysis
 
-# Use select to return all the columns and rows from this dataset.
-SELECT *
-FROM fortune_companies;
-
-# Use the aggregate function SUM() to add the revenues of each industry and see. 
-SELECT industry, ROUND(SUM(revenue)) AS total_revenue
+# Which industries have an average revenue of at last $200 Billion, and what are their avg revenues? 
+SELECT industry, ROUND(AVG(revenue),1) AS avg_revenue_billions
 FROM fortune_companies
 GROUP BY industry
-ORDER BY total_revenue desc;
+HAVING avg_revenue_billions>=200
+OREDER BY avg_revenue_billions desc;
 
-#
+# Assign all the companies in the Healthcare industry as 'mother friendly workplace', 'acceptable', or 'abysmal' based on the maternity leave offered.
+SELECT company_name, 
+CASE 
+   WHEN maternity_leave_weeks >= 10 THEN 'mother friendly workplace'
+   WHEN maternity_leave_weeks >= 8 THEN 'acceptable'
+   ELSE 'abysmal'
+END as mother_friendliness
+FROM fortune_companies
+WHERE industry='Healthcare';
+
+# Which companies have healthcare benefits and at least 15 timeoff days?
+SELECT company_name
+FROM fortune_companies
+WHERE healthcare_benefits = 1 AND paid_time_off_days >=15;
+
+# Which company has the biggest avg_employee_tenure in the industries that has revenue bigger than $200 Billion?
+SELECT company_name, revenue, industry, MAX(avg_employee_tenure)   
+FROM fortune_companies
+WHERE industry IN(SELECT industry FROM fortune_companies WHERE revenue>200);
+
+
